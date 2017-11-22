@@ -1,0 +1,13 @@
+cbm contains some matlab scripts for "computational and behavioral modeling".
+
+## Requirements
+MATLAB and its optimization toolbox
+(tested with matlab2012 and higher)
+
+## Installation
+download and add it to yout matlab path.
+
+## Examples
+See cbm_example_lap and cbm_example_hierlap
+
+NOTE: this is beta version and might get updated soon.

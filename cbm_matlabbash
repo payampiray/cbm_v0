@@ -1,0 +1,68 @@
+#!/bin/sh
+#
+# roboos - 03nov2011: created
+
+usage()
+{
+cat << EOF
+------------------------------------------------------------------------
+
+MATLAB_SUB allows you to start a matlab script with torque directly from 
+the linux command line.
+
+You can use it like this
+  matlab_sub <script.m>
+  matlab_sub <script1.m> <script2.m> ...
+or for example like this
+  matlab_sub script*.m
+to run a whole batch of matlab scripts at once.
+
+Note that this script needs to be extended to allow the user to specify
+WALLTIME, MEM and QUEUE
+
+See also /opt/fsl/bin/fsl_sub 
+
+------------------------------------------------------------------------
+EOF
+}
+
+if [ -z "$1" ]; then
+usage
+exit 0
+fi
+
+if [ "$1" = "-h" ]; then
+usage
+exit 0
+fi
+
+PWD=`pwd`
+MATLABCMD=matlab
+WALLTIME=0:04:00
+QUEUE=automatic
+MEM=500mb
+
+for SCRIPT in "$@" ; do
+
+ # determine the complete name of the script, including the path
+if [ -a /"$SCRIPT" ] ; then
+FULLNAME=$SCRIPT
+elif [ -a "$PWD/$SCRIPT" ] ; then
+FULLNAME="$PWD/$SCRIPT"
+else
+echo Error: cannot locate the MATLAB script or function $SCRIPT
+exit 1
+fi
+
+ # construct the command line that needs to be executed within MATLAB
+MATLABSCRIPT="cd $PWD; try, run $FULLNAME, end; exit"
+
+  # run the script in matlab using torque
+qsub -q $QUEUE -l walltime=$WALLTIME -l mem=$MEM << EOF1
+matlab << EOF2
+$MATLABSCRIPT
+EOF2
+EOF1
+
+done
+
