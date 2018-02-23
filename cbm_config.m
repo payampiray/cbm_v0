@@ -10,13 +10,11 @@ p.addParamValue('d',d);
 p.addParamValue('verbose',1);
 p.addParamValue('functionname','',@(arg)ischar(arg)|| isempty(arg) );
 p.addParamValue('fname_prog',sprintf('cbm_%s_%0.4f.mat',algorithm,now),@valid_fname);
-% p.addParamValue('flog',1,@(arg)((arg==1)||(ischar(arg))));
 p.addParamValue('flog',1,@valid_flog);
-p.addParamValue('rng',[-5*ones(1,d);5*ones(1,d)],@(arg)valid_rng(d,arg));
 p.addParamValue('save_data',1,@(arg)(arg==1)||(arg==0));
-p.addParamValue('loop',0,@(arg)(arg==1)||(arg==0)); % not used anymore, replaced with algorithm (mandatory)
+% p.addParamValue('loop',0,@(arg)(arg==1)||(arg==0)); % not used anymore, replaced with algorithm (mandatory)
 
-if any(strcmp({'lap'},algorithm))    
+if any(strcmp({'lap'},algorithm))  
     p.addParamValue('inits',[],@(arg)(ismatrix(arg) && size(arg,2)==d));    
     p.addParamValue('numinit',min(7*d,100),@(arg)isscalar(arg));
     p.addParamValue('save_prog',0,@(arg)(arg==1)||(arg==0));
@@ -24,7 +22,8 @@ if any(strcmp({'lap'},algorithm))
     p.addParamValue('numinit_med',100,@(arg)isscalar(arg));
     p.addParamValue('numinit_up',1000,@(arg)isscalar(arg));        
 end
-if any(strcmp({'lap','hierlap','loophierlap'},algorithm))        
+if any(strcmp({'lap','hierlap','loophierlap'},algorithm))
+    p.addParamValue('rng',[-5*ones(1,d);5*ones(1,d)],@(arg)valid_rng(d,arg));
     p.addParamValue('largescale','off');
     p.addParamValue('gradient','off');
     p.addParamValue('hessian','off'); 
@@ -46,13 +45,22 @@ if any(strcmp({'hierlap','loophierlap'},algorithm))
 
 end
 if strcmp('loophierlap',algorithm)
-    
     p.addParamValue('loop_runtime',30,@(arg)(isscalar(arg)&& (arg<300)));
     p.addParamValue('loop_maxruntime',90,@(arg)(isscalar(arg)&& (arg<600)));
     p.addParamValue('loop_pausesec',30,@(arg)(isscalar(arg)&& (arg<60)));
     p.addParamValue('loop_maxnumrun',3,@(arg)(floor(arg)==arg));    
     p.addParamValue('loop_discard_bad',true,@(arg)(islogical(arg)));
 end
+
+if any(strcmp({'slicesample'},algorithm))
+    p.addParamValue('inits',[],@(arg)(ismatrix(arg) && size(arg,2)==d));    
+    p.addParamValue('nsamp',10^4);
+    p.addParamValue('save_prog',1);
+    p.addParamValue('burnin',0); % matlab default
+    p.addParamValue('thin',1); % matlab default
+    p.addParamValue('width',10); % matlab default
+end
+
 p.parse(pconfig);
 pconfig    = p.Results;
 
