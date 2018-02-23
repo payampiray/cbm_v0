@@ -155,7 +155,7 @@ for n=1:N
                 if verbose, fprintf(fid,'\nbad subject %02d ... use liberal tolgrad %0.4f\n',n, tolgrad); end
                 ptconfig = pconfig;
                 ptconfig.tolgrad = tolgrad;
-                [loglik_n,theta_n,A_n,G_n,flag_n] = cbm_quad_lap(dat,model,prior,pconfig,'MAP');                             
+                [loglik_n,theta_n,A_n,G_n,flag_n] = cbm_quad_lap(dat,model,prior,ptconfig,'MAP');                             
                 theta_n_l{l} = theta_n;
                 loglik_n_l{l} = loglik_n;
                 A_n_l{l}  = A_n;
