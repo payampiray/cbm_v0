@@ -37,7 +37,7 @@ exit 0
 fi
 
 PWD=`pwd`
-MATLABCMD=matlab
+MATLABCMD=matlab2016b
 WALLTIME=0:04:00
 QUEUE=automatic
 MEM=500mb
@@ -59,7 +59,7 @@ MATLABSCRIPT="cd $PWD; try, run $FULLNAME, end; exit"
 
   # run the script in matlab using torque
 qsub -q $QUEUE -l walltime=$WALLTIME -l mem=$MEM << EOF1
-matlab << EOF2
+matlab2016b << EOF2
 $MATLABSCRIPT
 EOF2
 EOF1
