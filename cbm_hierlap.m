@@ -112,7 +112,7 @@ if ~isfield(pconfig,'algorithm')
 else
     algorithm = pconfig.algorithm;
 end
-if strcmp(algorithm,'loophierlap'),
+if strcmp(algorithm,'loophierlap')
     looplap = 1;
 end
 
@@ -173,6 +173,8 @@ tolL      = pconfig.tolL;
 iter      = 0;
 maxiter   = pconfig.maxiter;
 
+mu = 0;
+W  = 0;
 %----------------------------------
 % termination
 prog     = struct('L',[],'dL',[],'dx',[]);

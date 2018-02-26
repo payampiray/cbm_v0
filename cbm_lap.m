@@ -221,5 +221,5 @@ cbm        = struct('method',mfilename,...
                     'output',output);
 if ~isempty(fname), save(fname,'cbm'); end
 if verbose, fprintf(fid,'done\n'); end
-if any(fid~=1), fclose(fid); end;
+if any(fid~=1), fclose(fid); end
 end

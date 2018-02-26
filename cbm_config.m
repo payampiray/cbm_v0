@@ -70,6 +70,9 @@ end
 %-------------------------------------------------------
 function valid = valid_fname(arg)
 valid =1;
+if isempty(arg)
+    return;
+end
 try
     save(arg,'valid');
     delete(arg);

@@ -10,7 +10,7 @@ catch message
 %     killme = 0;
 end
 toc;
-if ~killme, return, end;
+if ~killme, return, end
 
 
 end
