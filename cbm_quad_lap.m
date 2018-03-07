@@ -25,7 +25,12 @@ Hconf =  pconfig.hessian;
 init  = [prior.mean'; init0];
 hfunc = @(theta)(neglogloggaussian(theta,model,prior,data,Gconf,Hconf));
 [tx,negloglik,H,G,flag,kopt] = cbm_optim(hfunc,pconfig,rng,numinit,init,1);
-
+if flag == 0
+    d  = length(prior.mean);
+    tx = nan(1,d);
+    H  = nan(d,d);
+    G  = nan(d,1);
+end
 loglik = -negloglik;
 x      = tx';
 A      = H;
